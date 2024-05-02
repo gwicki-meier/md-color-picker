@@ -1,6 +1,16 @@
+// Import templates
+import mdColorPickerTemplate from '../templates/mdColorPicker.tpl.html';
+import mdColorPickerContainerTemplate from '../templates/mdColorPickerContainer.tpl.html';
+import mdColorPickerDialogTemplate from '../templates/mdColorPickerDialog.tpl.html';
 
-(function( window, angular, undefined ) {
+// Import styles
+import '../less/mdColorPicker.less';
+
+import tinycolor from 'tinycolor2';
+import angular from 'angular';
+
 'use strict';
+
 var dateClick;
 
 var GradientCanvas = function( type, restrictX ) {
@@ -384,7 +394,7 @@ angular.module('mdColorPicker', [])
 	.directive('mdColorPicker', [ '$timeout', 'mdColorPickerHistory', function( $timeout, colorHistory ) {
 
 		return {
-			templateUrl: "mdColorPicker.tpl.html",
+			template: mdColorPickerTemplate,
 
 			// Added required controller ngModel
 			require: '^ngModel',
@@ -404,6 +414,7 @@ angular.module('mdColorPicker', [])
 				clickOutsideToClose: '@',
 				skipHide: '@',
 				preserveScope: '@',
+				multiple: '=?',
 
 				// Advanced options
 				mdColorClearButton: '=?',
@@ -497,6 +508,7 @@ angular.module('mdColorPicker', [])
 						hasBackdrop: $scope.hasBackdrop,
 						skipHide: $scope.skipHide,
 						preserveScope: $scope.preserveScope,
+						multiple: $scope.multiple,
 
 						mdColorAlphaChannel: $scope.mdColorAlphaChannel,
 						mdColorSpectrum: $scope.mdColorSpectrum,
@@ -523,7 +535,7 @@ angular.module('mdColorPicker', [])
 	}])
 	.directive( 'mdColorPickerContainer', ['$compile','$timeout','$mdColorPalette','mdColorPickerHistory', function( $compile, $timeout, $mdColorPalette, colorHistory ) {
 		return {
-			templateUrl: 'mdColorPickerContainer.tpl.html',
+			template: mdColorPickerContainerTemplate,
 			scope: {
 				value: '=?',
 				default: '@',
@@ -845,6 +857,7 @@ angular.module('mdColorPicker', [])
 				options.focusOnOpen = options.focusOnOpen === undefined ? false : options.focusOnOpen;
 				options.preserveScope = options.preserveScope === undefined ? true : options.preserveScope;
 				options.skipHide = options.skipHide === undefined ? true : options.skipHide;
+				options.multiple = options.multiple === undefined ? true : options.multiple;
 
 				// mdColorPicker Properties
 				options.mdColorAlphaChannel = options.mdColorAlphaChannel === undefined ? false : options.mdColorAlphaChannel;
@@ -859,9 +872,10 @@ angular.module('mdColorPicker', [])
 
 
                 dialog = $mdDialog.show({
-					templateUrl: 'mdColorPickerDialog.tpl.html',
+					template: mdColorPickerDialogTemplate,
 					hasBackdrop: options.hasBackdrop,
 					clickOutsideToClose: options.clickOutsideToClose,
+					multiple: options.multiple,
 
 					controller: ['$scope', 'options', function( $scope, options ) {
 							//console.log( "DIALOG CONTROLLER OPEN", Date.now() - dateClick );
@@ -921,5 +935,4 @@ angular.module('mdColorPicker', [])
 				return dialog.cancel();
 			}
 		};
-	}]);
-})( window, window.angular );
+}]);

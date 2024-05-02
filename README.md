@@ -1,3 +1,7 @@
+> [!IMPORTANT]
+> since Version 0.3.0, md-color-picker is generated with rollup.
+
+
 # md-color-picker
 Angular-Material based color picker with no jQuery or other DOM/utility library dependencies.
 
